@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Farhath Hotel — Farhath Family Restaurant</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      /* changed accent from orange to teal/blue */
+      --accent: #00a8cc; /* teal */
+      --accent-dark: #007ea6;
+      --accent-rgb: 0,168,204;
+      --black:#0d0d0d;
+      --cream:#fffaf3;
+      --card-shadow: 0 12px 30px rgba(13,13,13,0.06);
+      --muted:#6b6b6b;
+    }
+    *{box-sizing:border-box}
+    body{
+      font-family:'Poppins',sans-serif;
+      background: var(--cream);
+      margin:0;
+      color:var(--black);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.35;
+    }
+
+    /* HEADER */
+    header{
+      background: linear-gradient(90deg,var(--accent), var(--accent-dark));
+      color:white;
+      padding:18px 18px;
+      position:sticky;
+      top:0;
+      z-index:1200;
+      display:flex;
+      gap:14px;
+      align-items:center;
+      justify-content:space-between;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+    header .brand{display:flex; gap:12px; align-items:center}
+    header h1{font-size:20px; margin:0; font-weight:700}
+    header p{margin:0; font-size:13px; opacity:0.95}
+
+    nav.topnav{display:flex; gap:10px; align-items:center}
+    nav.topnav a{
+      color:white;
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:8px;
+      font-weight:600;
+      font-size:13px;
+      background:rgba(255,255,255,0.06);
+    }
+    nav.topnav a:hover{background:rgba(255,255,255,0.12)}
+
+    /* LAYOUT */
+    .container{
+      max-width:1200px;
+      margin:22px auto;
+      padding:0 16px;
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:20px;
+      align-items:start;
+    }
+
+    main{min-height:600px}
+
+    /* HERO */
+    .hero{
+      background: linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.00));
+      border-radius:14px;
+      color:var(--black);
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      box-shadow:var(--card-shadow);
+      border:1px solid rgba(0,0,0,0.04);
+    }
+    .hero h2{margin:0; font-size:22px}
+    .hero p{margin:0; color:var(--muted)}
+
+    .controls{margin-top:10px; display:flex; gap:12px; align-items:center; flex-wrap:wrap}
+    .search{flex:1; display:flex}
+    .search input{
+      width:100%;
+      padding:12px 16px;
+      border-radius:12px;
+      border:1px solid rgba(13,13,13,0.06);
+      outline:none;
+      font-size:14px;
+      background:white;
+      box-shadow:0 8px 20px rgba(13,13,13,0.04);
+    }
+
+    .filters{display:flex; gap:8px; flex-wrap:wrap}
+    .filters button{
+      border:1px solid rgba(13,13,13,0.06);
+      padding:8px 12px;
+      border-radius:999px;
+      background:white;
+      cursor:pointer;
+      font-weight:600;
+      color:var(--black);
+      box-shadow:0 8px 18px rgba(13,13,13,0.03);
+    }
+    .filters button.active{background:var(--black); color:var(--accent); border-color:var(--black)}
+
+    /* menu grid */
+    .menu-grid{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+      gap:14px;
+    }
+
+    .card{
+      background: white;
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow: var(--card-shadow);
+      display:flex;
+      flex-direction:column;
+      transition: transform .16s ease, box-shadow .16s ease;
+      border:1px solid rgba(13,13,13,0.03);
+    }
+    .card:hover{transform:translateY(-6px)}
+    .card img{width:100%; height:150px; object-fit:cover; display:block; background:#f3f2f1}
+    .meta{padding:12px; display:flex; gap:8px; flex-direction:column; flex:1}
+    .meta h3{margin:0; font-size:15px; display:flex; align-items:center; gap:8px}
+    .meta p{margin:0; color:var(--muted); font-size:13px}
+    .meta .row{display:flex; justify-content:space-between; align-items:center; gap:8px}
+    .price{font-weight:800; color:var(--accent)}
+    .meta button{
+      padding:8px 12px;
+      border-radius:10px;
+      border:0;
+      background:var(--black);
+      color:var(--accent);
+      cursor:pointer;
+      font-weight:700;
+    }
+
+    /* tags for category & emoji */
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-size:12px;
+      padding:6px 8px;
+      border-radius:999px;
+      background: rgba(var(--accent-rgb), 0.08);
+      color:var(--black);
+      border:1px solid rgba(var(--accent-rgb), 0.12);
+      font-weight:600;
+    }
+
+    /* Sidebar cart */
+    .cart{
+      position:sticky;
+      top:92px;
+      background:white;
+      padding:14px;
+      border-radius:12px;
+      box-shadow:var(--card-shadow);
+      max-height:76vh;
+      overflow:auto;
+      border:1px solid rgba(13,13,13,0.03);
+    }
+    .cart h3{margin:0 0 10px 0; font-size:16px}
+    .cart .empty{color:var(--muted); padding:18px 0; text-align:center}
+    .cart .cart-list{display:flex; flex-direction:column; gap:10px}
+    .cart-item{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      padding:8px;
+      border-radius:8px;
+      background:#fff6f0;
+      border:1px solid rgba(var(--accent-rgb),0.06);
+    }
+    .cart-item .left{display:flex; gap:8px; align-items:center}
+    .cart-item img{width:48px; height:48px; object-fit:cover; border-radius:8px}
+    .cart-item .title{font-weight:700; font-size:14px}
+    .cart-item .qty{display:flex; gap:6px; align-items:center}
+    .btn-qty{
+      border:0;
+      padding:6px 8px;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:800;
+      background:var(--black);
+      color:var(--accent);
+    }
+
+    .cart .total{
+      margin-top:10px;
+      display:flex;
+      justify-content:space-between;
+      font-weight:900;
+      font-size:18px;
+    }
+    .checkout{
+      margin-top:12px;
+      width:100%;
+      padding:12px;
+      border-radius:10px;
+      border:0;
+      cursor:pointer;
+      background:var(--black);
+      color:var(--accent);
+      font-weight:800;
+    }
+
+    /* Popular & Best lists */
+    .row-flex{display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:8px}
+    .pill{background:white; border-radius:10px; padding:10px 12px; border:1px solid rgba(13,13,13,0.04); box-shadow:0 8px 18px rgba(13,13,13,0.03)}
+    .section{margin-top:22px; background:white; border-radius:12px; padding:12px; box-shadow:var(--card-shadow); border:1px solid rgba(13,13,13,0.03)}
+
+    #menuList{max-height:320px; overflow:auto; padding:8px; border-radius:8px; background:#fff8f5; border:1px solid rgba(13,13,13,0.03)}
+
+    /* modal */
+    .modal-bg{position:fixed; inset:0; background:rgba(0,0,0,0.5); display:none; align-items:center; justify-content:center; z-index:1500}
+    .modal{background:white; width:92%; max-width:620px; border-radius:12px; padding:18px; box-shadow:0 30px 60px rgba(0,0,0,0.25)}
+
+    /* back to top */
+    #backTop{position:fixed; bottom:26px; right:26px; background:var(--accent); color:white; border:0; padding:12px 14px; border-radius:999px; cursor:pointer; display:none; z-index:1400; box-shadow: 0 12px 36px rgba(0,0,0,0.18)}
+
+    /* responsive */
+    @media (max-width:1000px){
+      .container{grid-template-columns: 1fr; padding-bottom:80px}
+      .cart{position:relative; top:auto; max-height:none}
+      #backTop{right:12px}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand" style="align-items:center">
+    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" style="border-radius:8px; background:rgba(0,0,0,0.06); padding:6px">
+      <path d="M4 11c0-3.866 3.582-7 8-7s8 3.134 8 7v6a2 2 0 0 1-2 2h-4" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M8 17h8M8 14h8" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div>
+      <h1>Farhath Hotel</h1>
+      <p style="font-size:12px">Farhath Family Restaurant — Fresh multi-cuisine dishes</p>
+    </div>
+  </div>
+
+  <nav class="topnav" aria-label="top navigation">
+    <a href="#about">About</a>
+    <a href="#menu">Menu</a>
+    <a href="#menuListSection">Menu List</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<div class="container">
+  <main>
+    <section class="hero">
+      <div>
+        <h2>Farhath Hotel Special Menu</h2>
+        <p>Family-friendly multi-cuisine restaurant serving delicious Indian, Arabian, Chinese, Tandoori and Fast-Food dishes prepared fresh every day.</p>
+      </div>
+
+      <div class="controls">
+        <div class="search">
+          <input id="searchBox" placeholder="Search food by name or emoji (e.g. 🍕 or burger)..." oninput="searchFood()" />
+        </div>
+
+        <div class="filters" id="filterButtons" aria-hidden="false">
+          <!-- JS will populate -->
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="menu" style="margin-top:18px;">
+      <h3 style="margin-bottom:8px">Menu — Tap an item to add to cart</h3>
+
+      <div style="display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap">
+        <div class="row-flex" id="popularWrap" style="flex:1">
+          <strong style="margin-right:8px">🔥 Popular:</strong>
+          <!-- popular pills inserted by JS -->
+        </div>
+        <div class="row-flex" id="bestWrap">
+          <strong style="margin-right:8px">⭐ Best:</strong>
+          <!-- best pills inserted by JS -->
+        </div>
+      </div>
+
+      <div class="menu-grid" id="menuGrid">
+        <!-- cards populated by JS -->
+      </div>
+    </section>
+
+    <section class="section" id="menuListSection">
+      <h3>All Food Items (Text List)</h3>
+      <div id="menuList"></div>
+    </section>
+
+    <!-- Fast Food Gallery (bottom pictures for fast food) -->
+    <section class="section" id="fastfoodGallery">
+      <h3>Fast Food Gallery 🍟</h3>
+      <div style="display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-top:10px">
+        <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=900" alt="Delicious Burger" style="width:100%; height:160px; object-fit:cover; border-radius:8px">
+        <img src="https://images.unsplash.com/photo-1576107232684-1279f390859f?w=900" alt="Crispy Fries" style="width:100%; height:160px; object-fit:cover; border-radius:8px">
+        <img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=900" alt="Fried Chicken" style="width:100%; height:160px; object-fit:cover; border-radius:8px">
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <h3>About Farhath Hotel</h3>
+      <p style="margin-top:8px;">
+        <strong>Farhath Family Restaurant</strong> — “Farhath Hotel is a family-friendly multi-cuisine restaurant serving delicious Indian, Arabian, Chinese, Tandoori and Fast-Food dishes prepared fresh every day.”<br>
+        We focus on fresh ingredients, friendly service, and flavors that bring families together. Our kitchen prepares each dish with care, adapting spice levels on request and offering both vegetarian and non-vegetarian options.
+      </p>
+    </section>
+
+    <section class="section" id="contact">
+      <h3>Contact</h3>
+      <p style="margin-top:8px">Phone: <strong>9391214606</strong><br>Email: <strong>farhath1704@gmail.com</strong></p>
+    </section>
+  </main>
+
+  <!-- CART SIDEBAR -->
+  <aside class="cart" aria-label="Cart">
+    <h3>Your Cart</h3>
+    <div id="cartItemsWrap">
+      <div class="empty" id="cartEmpty">Your cart is empty. Add items from the menu.</div>
+      <div class="cart-list" id="cartList" style="display:none"></div>
+    </div>
+
+    <div class="total" id="cartTotalWrap" style="display:none">
+      <span>Total</span>
+      <span id="totalAmount">₹0</span>
+    </div>
+
+    <button class="checkout" id="checkoutBtn" style="display:none" onclick="openCheckout()">Checkout</button>
+  </aside>
+</div>
+
+<!-- Modal -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <h3>Order Summary</h3>
+    <div id="summaryContent" style="margin-top:10px"></div>
+    <div style="display:flex; justify-content:space-between; margin-top:14px; font-weight:800">
+      <span>Total:</span><span id="summaryTotal">₹0</span>
+    </div>
+    <div style="display:flex; gap:8px; margin-top:14px; justify-content:flex-end;">
+      <button onclick="closeCheckout()" style="padding:10px 12px; border-radius:8px; border:0; background:#e5e7eb; cursor:pointer">Close</button>
+      <button onclick="confirmOrder()" style="padding:10px 12px; border-radius:8px; border:0; background:var(--black); color:var(--accent); cursor:pointer">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<button id="backTop" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+/* =========================
+   Data: 150 Items (10 categories x 15 items)
+   Each category uses Unsplash source queries targeted to category (so pizza items show pizza pics, burger items show burger pics)
+   Also: emoji mapping for item heading.
+   ========================= */
+
+const categoryEmoji = {
+  'Pizza':'🍕','Burger':'🍔','Pasta':'🍝','Salad':'🥗','Dessert':'🍰',
+  'Indian':'🍛','Chinese':'🥡','Arabian':'🫓','Tandoori':'🔥','Fast Food':'🍟'
+};
+
+const categories = ['Pizza','Burger','Pasta','Salad','Dessert','Indian','Chinese','Arabian','Tandoori','Fast Food'];
+
+/* base names arrays (15 each) */
+const baseNames = {
+  'Pizza': [
+    'Margherita','Pepperoni','Farmhouse','BBQ Chicken','Cheese Burst','Mexican Fiesta','Veggie Supreme','Paneer Makhani',
+    'Paneer Tikka','Hawaiian','Four Cheese','Peri Peri Paneer','Garlic Chicken','Hot & Spicy','Truffle Special'
+  ],
+  'Burger': [
+    'Classic Beef','Cheese Burger','Veggie Burger','Double Patty','BBQ Chicken Burger','Spicy Chicken','Mushroom Swiss','Aloo Tikki Burger',
+    'Paneer Burger','Crispy Fish','Jalapeno Burger','Smoky Bacon','Grilled Chicken','Mayo Blast','Peri Peri Burger'
+  ],
+  'Pasta': [
+    'Spaghetti Pomodoro','Penne Arrabiata','Fettuccine Alfredo','Lasagna','Veggie Penne','Creamy Mushroom','Pesto Pasta','Seafood Linguine',
+    'Bolognese','Cheesy Macaroni','Garlic Olive Pasta','Tomato Basil','Carbonara','Spinach Ricotta','Lemon Herb Pasta'
+  ],
+  'Salad': [
+    'Caesar Salad','Greek Salad','Garden Fresh','Quinoa Salad','Fruit Salad','Cobb Salad','Caprese','Mexican Corn Salad',
+    'Mediterranean Salad','Avocado Salad','Protein Power','Asian Slaw','Kale & Quinoa','Spinach Walnut','Chickpea Salad'
+  ],
+  'Dessert': [
+    'Chocolate Ice Cream','Gulab Jamun','Brownie','Cheesecake','Tiramisu','Rasmalai','Kulfi','Apple Pie',
+    'Choco Lava','Panna Cotta','Carrot Halwa','Strawberry Sorbet','Mango Mousse','Falooda','Banana Split'
+  ],
+  'Indian': [
+    'Butter Chicken','Palak Paneer','Chana Masala','Dal Makhni','Aloo Gobi','Paneer Butter Masala','Veg Biryani','Chicken Biryani',
+    'Kadai Chicken','Rogan Josh','Fish Curry','Mutton Curry','Samosa (2pcs)','Pav Bhaji','Dosa (Masala)'
+  ],
+  'Chinese': [
+    'Chow Mein','Hakka Noodles','Veg Manchurian','Chicken Manchurian','Sweet & Sour Chicken','Spring Rolls','Veg Fried Rice','Egg Fried Rice',
+    'Chilli Paneer','Schezwan Noodles','Hot Garlic Noodles','Gobi Manchurian','Sesame Chicken','Honey Chilli Potato','Chicken Fried Rice'
+  ],
+  'Arabian': [
+    'Shawarma (Chicken)','Shawarma (Veg)','Falafel Wrap','Hummus Platter','Tabbouleh','Grilled Kebab','Lamb Kofta','Chicken Kabsa',
+    'Arabic Rice','Fattoush','Kunafa','Baklava','Mandi Chicken','Arabic Mixed Grill','Pita Bread'
+  ],
+  'Tandoori': [
+    'Tandoori Chicken','Tandoori Paneer','Tandoori Prawns','Tandoori Fish','Seekh Kebab','Chicken Malai Kebab','Tandoori Mushroom','Paneer Tikka',
+    'Tangdi Kebab','Afghani Chicken','Hariyali Kebab','Tandoori Lamb Chops','Achari Chicken','BBQ Tandoori Platter','Tandoori Boti'
+  ],
+  'Fast Food': [
+    'French Fries','Onion Rings','Veg Nuggets','Chicken Nuggets','Hot Dog','Corn Dog','Paneer Fingers','Loaded Nachos',
+    'Cheesy Fries','Masala Fries','Samosa Burger','Wrap Roll','Club Sandwich','Grilled Cheese','Chicken Wings'
+  ]
+};
+
+/* Build items array using exact curated images from previous project */
+const items = [
+    // PIZZA
+    { id: 1, name: "Margherita Pizza", desc: "Classic delight with 100% real mozzarella cheese.", price: 299, category: "Pizza", image: "images/pizza/margherita.jpg" },
+    { id: 2, name: "Pepperoni Pizza", desc: "Loaded with pepperoni and extra cheese.", price: 499, category: "Pizza", image: "images/pizza/pepperoni.jpg" },
+    { id: 3, name: "Farmhouse Pizza", desc: "Delightful combination of onion, capsicum, tomato & grilled mushroom.", price: 349, category: "Pizza", image: "images/pizza/farmhouse.jpg" },
+    { id: 8, name: "Veg Supreme Pizza", desc: "Supreme combination of black olives, onions, capsicum, and mushroom.", price: 399, category: "Pizza", image: "images/pizza/veg-supreme.jpg" },
+    { id: 9, name: "Mexican Green Wave Pizza", desc: "Loaded with crunchy onions, capsicum, tomato and jalapeño.", price: 349, category: "Pizza", image: "images/pizza/mexican-green-wave.jpg" },
+    
+    // BURGERS
+    { id: 11, name: "Chicken Burger", desc: "Juicy chicken patty with cheese and lettuce.", price: 199, category: "Burger", image: "images/burgers/chicken.jpg" },
+    { id: 12, name: "Veg Burger", desc: "Crispy veg patty with fresh veggies and mayo.", price: 149, category: "Burger", image: "images/burgers/veg.jpg" },
+    { id: 16, name: "Paneer Burger", desc: "Spiced paneer patty with creamy sauce.", price: 179, category: "Burger", image: "images/burgers/paneer.jpg" },
+    
+    // FAST FOOD
+    { id: 21, name: "French Fries", desc: "Crispy golden salted fries.", price: 119, category: "Fast Food", image: "images/starters/french-fries.jpg" },
+    { id: 23, name: "Chicken Nuggets", desc: "Crispy bite-sized chicken nuggets.", price: 189, category: "Fast Food", image: "images/starters/nuggets.jpg" },
+    { id: 26, name: "Garlic Bread", desc: "Freshly baked bread with garlic butter.", price: 99, category: "Fast Food", image: "images/starters/garlic-bread.jpg" },
+    { id: 28, name: "Sandwich", desc: "Fresh vegetable and cheese sandwich.", price: 129, category: "Fast Food", image: "images/starters/sandwich.jpg" },
+    { id: 29, name: "Club Sandwich", desc: "Triple layered sandwich.", price: 199, category: "Fast Food", image: "images/starters/club-sandwich.jpg" },
+    
+    // CHINESE / INDIAN
+    { id: 51, name: "Momos", desc: "Steamed dumplings.", price: 149, category: "Chinese", image: "images/starters/momos.jpg" },
+    { id: 53, name: "Pani Puri", desc: "Crispy hollow puris.", price: 99, category: "Indian", image: "images/starters/pani-puri.jpg" },
+    { id: 54, name: "Samosa", desc: "Crispy pastry.", price: 60, category: "Indian", image: "images/starters/samosa.jpg" },
+    { id: 55, name: "Spring Rolls", desc: "Crispy rolls.", price: 120, category: "Chinese", image: "images/starters/spring-rolls.jpg" },
+    { id: 56, name: "Chilli Paneer", desc: "Spicy paneer.", price: 180, category: "Chinese", image: "images/starters/chilli-paneer.jpg" },
+    
+    // INDIAN / CHINESE MAINS
+    { id: 31, name: "Chicken Biryani", desc: "Aromatic basmati rice.", price: 349, category: "Indian", image: "images/main-course/chicken-biryani.jpg" },
+    { id: 32, name: "Veg Biryani", desc: "Mixed veg rice.", price: 249, category: "Indian", image: "images/main-course/veg-biryani.jpg" },
+    { id: 52, name: "Mutton Biryani", desc: "Aromatic mutton rice.", price: 399, category: "Indian", image: "images/main-course/mutton-biryani.jpg" },
+    { id: 33, name: "Chicken Fried Rice", desc: "Wok-tossed rice.", price: 229, category: "Chinese", image: "images/main-course/chicken-fried-rice.jpg" },
+    { id: 35, name: "Chicken Noodles", desc: "Stir-fried noodles.", price: 219, category: "Chinese", image: "images/main-course/chicken-noodles.jpg" },
+    { id: 40, name: "Paneer Rice", desc: "Flavorful paneer rice.", price: 239, category: "Indian", image: "images/main-course/paneer-rice.jpg" },
+    
+    // PASTA
+    { id: 37, name: "Chicken Pasta", desc: "Penne pasta.", price: 299, category: "Pasta", image: "images/main-course/chicken-pasta.jpg" },
+    { id: 38, name: "White Sauce Pasta", desc: "Creamy cheese pasta.", price: 249, category: "Pasta", image: "images/main-course/white-sauce-pasta.jpg" },
+    { id: 39, name: "Red Sauce Pasta", desc: "Tangy tomato pasta.", price: 229, category: "Pasta", image: "images/main-course/red-sauce-pasta.jpg" },
+    
+    // DESSERT
+    { id: 41, name: "Cold Coffee", desc: "Refreshing coffee.", price: 129, category: "Dessert", image: "images/drinks/cold-coffee.jpg" },
+    { id: 42, name: "Chocolate Milkshake", desc: "Thick chocolate shake.", price: 149, category: "Dessert", image: "images/drinks/chocolate-milkshake.jpg" },
+    { id: 43, name: "Vanilla Milkshake", desc: "Vanilla shake.", price: 129, category: "Dessert", image: "images/drinks/vanilla-milkshake.jpg" },
+    { id: 44, name: "Mango Shake", desc: "Mango shake.", price: 159, category: "Dessert", image: "images/drinks/mango-shake.jpg" },
+    { id: 45, name: "Soft Drinks", desc: "Chilled beverages.", price: 60, category: "Dessert", image: "images/drinks/soft-drinks.jpg" },
+    { id: 46, name: "Chocolate Cake", desc: "Rich chocolate cake.", price: 199, category: "Dessert", image: "images/desserts/chocolate-cake.jpg" },
+    { id: 48, name: "Ice Cream", desc: "Premium ice cream.", price: 99, category: "Dessert", image: "images/desserts/ice-cream.jpg" },
+    { id: 49, name: "Gulab Jamun", desc: "Deep fried dough balls.", price: 89, category: "Dessert", image: "images/desserts/gulab-jamun.jpg" }
+];
+
+/* Helper get emoji by category */
+function emojiFor(cat){ return categoryEmoji[cat] || '🍽️' }
+
+/* Populate UI */
+const menuGrid = document.getElementById('menuGrid');
+const filterButtonsWrap = document.getElementById('filterButtons');
+const menuListEl = document.getElementById('menuList');
+const popularWrap = document.getElementById('popularWrap');
+const bestWrap = document.getElementById('bestWrap');
+
+/* Build filter buttons */
+const allBtn = document.createElement('button');
+allBtn.innerText = 'All';
+allBtn.classList.add('active');
+allBtn.onclick = ()=>applyFilter('All', allBtn);
+filterButtonsWrap.appendChild(allBtn);
+const categoryButtons = {'All': allBtn};
+categories.forEach(cat=>{
+  const btn = document.createElement('button');
+  btn.innerText = cat;
+  btn.onclick = ()=>applyFilter(cat, btn);
+  filterButtonsWrap.appendChild(btn);
+  categoryButtons[cat] = btn;
+});
+
+/* Render cards */
+function createCard(item){
+  const div = document.createElement('div');
+  div.className = 'card';
+  div.dataset.name = item.name.toLowerCase();
+  div.dataset.category = item.category;
+  const emoji = emojiFor(item.category);
+  // item title includes emoji
+  div.innerHTML = `
+    <img src="${item.image}" alt="${escapeHtml(item.name)}" loading="lazy">
+    <div class="meta">
+      <div style="display:flex; justify-content:space-between; align-items:center">
+        <h3>${emoji} ${escapeHtml(item.name)}</h3>
+        <span class="tag">${escapeHtml(item.category)}</span>
+      </div>
+      <p class="muted">Delicious ${escapeHtml(item.category)} prepared fresh</p>
+      <div class="row">
+        <div class="price">₹${item.price}</div>
+        <button onclick="addToCart(${item.id})">Add</button>
+      </div>
+    </div>
+  `;
+  return div;
+}
+
+items.forEach(it => menuGrid.appendChild(createCard(it)));
+
+/* Build textual menu list */
+function buildMenuList(){
+  const ol = document.createElement('ol');
+  ol.style.margin = '8px 0';
+  ol.style.paddingLeft = '18px';
+  items.forEach(it=>{
+    const li = document.createElement('li');
+    li.style.marginBottom='6px';
+    li.innerText = `${emojiFor(it.category)} ${it.name} — ₹${it.price} (${it.category})`;
+    ol.appendChild(li);
+  });
+  menuListEl.appendChild(ol);
+}
+buildMenuList();
+
+/* Popular and Best: choose first 15 items as popular and next 15 as best (you can change selection logic) */
+const popular = items.slice(0,15);
+const best = items.slice(15,30);
+
+function buildPills(list, wrap){
+  list.forEach(it => {
+    const p = document.createElement('div');
+    p.className = 'pill';
+    p.style.cursor = 'pointer';
+    p.onclick = ()=>{ // scroll to card and highlight briefly
+      const cards = Array.from(document.querySelectorAll('.menu-grid .card'));
+      const target = cards.find(c => c.querySelector('h3').innerText.includes(it.name));
+      if(target){
+        target.scrollIntoView({behavior:'smooth', block:'center'});
+        target.style.boxShadow = `0 18px 46px rgba(var(--accent-rgb),0.18)`;
+        setTimeout(()=> target.style.boxShadow = '', 1200);
+      }
+    };
+    p.innerText = `${emojiFor(it.category)} ${it.name}`;
+    wrap.appendChild(p);
+  });
+}
+buildPills(popular, popularWrap);
+buildPills(best, bestWrap);
+
+/* FILTER & SEARCH */
+function applyFilter(cat, btn){
+  document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const cards = document.querySelectorAll('.menu-grid .card');
+  cards.forEach(c=>{
+    if(cat==='All' || c.dataset.category === cat) c.style.display = 'flex';
+    else c.style.display = 'none';
+  });
+  // clear search box
+  document.getElementById('searchBox').value = '';
+}
+
+function searchFood(){
+  const q = document.getElementById('searchBox').value.toLowerCase().trim();
+  const cards = document.querySelectorAll('.menu-grid .card');
+  cards.forEach(c=>{
+    const name = c.dataset.name;
+    const cat = c.dataset.category.toLowerCase();
+    // allow emoji search: check emoji names
+    const matched = name.includes(q) || cat.includes(q);
+    c.style.display = (q === '' || matched) ? 'flex' : 'none';
+  });
+  // if search active unset filter active
+  if(q !== ''){
+    document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
+  } else {
+    // set All active if nothing else
+    document.querySelector('.filters button')?.classList.add('active');
+  }
+}
+
+/* escape helper */
+function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* =========================
+   Cart logic
+   ========================= */
+const cart = {}; // id -> {item, qty}
+const cartList = document.getElementById('cartList');
+const cartEmpty = document.getElementById('cartEmpty');
+const totalAmountEl = document.getElementById('totalAmount');
+const cartTotalWrap = document.getElementById('cartTotalWrap');
+const checkoutBtn = document.getElementById('checkoutBtn');
+
+window.addToCart = function(id){
+  const item = items.find(x=>x.id===id);
+  if(!item) return;
+  if(!cart[id]) cart[id] = { item, qty: 0 };
+  cart[id].qty++;
+  renderCart();
+};
+
+function renderCart(){
+  cartList.innerHTML = '';
+  const keys = Object.keys(cart);
+  if(keys.length===0){
+    cartEmpty.style.display = 'block';
+    cartList.style.display = 'none';
+    cartTotalWrap.style.display = 'none';
+    checkoutBtn.style.display = 'none';
+    totalAmountEl.innerText = '₹0';
+    return;
+  }
+  cartEmpty.style.display = 'none';
+  cartList.style.display = 'flex';
+  cartTotalWrap.style.display = 'flex';
+  checkoutBtn.style.display = 'block';
+
+  let total = 0;
+  keys.forEach(k=>{
+    const c = cart[k];
+    const it = c.item;
+    total += c.qty * it.price;
+
+    const div = document.createElement('div');
+    div.className = 'cart-item';
+    div.innerHTML = `
+      <div class="left">
+        <img src="${it.image}" alt="${escapeHtml(it.name)}" loading="lazy">
+        <div>
+          <div class="title">${escapeHtml(it.name)}</div>
+          <div class="muted" style="font-size:12px">₹${it.price} × ${c.qty} = ₹${c.qty * it.price}</div>
+        </div>
+      </div>
+      <div class="qty">
+        <button class="btn-qty" onclick="changeQty(${it.id}, -1)">−</button>
+        <span style="font-weight:700; padding:0 8px">${c.qty}</span>
+        <button class="btn-qty" onclick="changeQty(${it.id}, 1)">+</button>
+      </div>
+    `;
+    cartList.appendChild(div);
+  });
+
+  totalAmountEl.innerText = '₹' + total;
+}
+
+window.changeQty = function(id, delta){
+  if(!cart[id]) return;
+  cart[id].qty += delta;
+  if(cart[id].qty <= 0) delete cart[id];
+  renderCart();
+};
+
+/* Checkout modal */
+function openCheckout(){
+  const modalBg = document.getElementById('modalBg');
+  const summaryContent = document.getElementById('summaryContent');
+  const summaryTotal = document.getElementById('summaryTotal');
+  summaryContent.innerHTML = '';
+
+  let total = 0;
+  Object.values(cart).forEach(c=>{
+    const it = c.item;
+    const line = document.createElement('div');
+    line.style.marginBottom='8px';
+    line.innerText = `${it.name} x ${c.qty} — ₹${it.price * c.qty}`;
+    summaryContent.appendChild(line);
+    total += it.price * c.qty;
+  });
+  summaryTotal.innerText = '₹' + total;
+  modalBg.style.display = 'flex';
+}
+window.openCheckout = openCheckout;
+function closeCheckout(){ document.getElementById('modalBg').style.display = 'none'; }
+
+function confirmOrder(){
+  const total = document.getElementById('summaryTotal').innerText;
+  alert('Order confirmed! Total: ' + total + '\nWe will contact you at 9391214606.');
+  for(const k in cart) delete cart[k];
+  renderCart();
+  closeCheckout();
+}
+window.closeCheckout = closeCheckout;
+window.confirmOrder = confirmOrder;
+
+/* initial render */
+renderCart();
+
+/* =========================
+   Back to top & scroll
+   ========================= */
+const backBtn = document.getElementById('backTop');
+window.addEventListener('scroll', ()=>{
+  backBtn.style.display = window.scrollY > 300 ? 'block' : 'none';
+});
+
+/* Accessibility: allow Enter in search to add first visible card */
+document.getElementById('searchBox').addEventListener('keydown', (e)=>{
+  if(e.key === 'Enter'){
+    const first = Array.from(document.querySelectorAll('.menu-grid .card')).find(c => c.style.display !== 'none');
+    if(first){
+      const nm = first.querySelector('h3').innerText.replace(/^[^\s]+\s/,''); // remove emoji
+      const it = items.find(x=>x.name === nm || first.querySelector('h3').innerText.includes(x.name));
+      if(it) addToCart(it.id);
+    }
+  }
+});
+
+/* done */
+console.log('Loaded items:', items.length);
+</script>
+
+</body>
+</html>  
